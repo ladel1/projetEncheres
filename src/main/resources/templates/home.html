@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://thymeleaf.org" >
+	<head th:replace="layouts/primary-layout :: head('Connexion')" ></head>
+<body>
+	
+	<div class="container">
+		<header th:replace="layouts/primary-layout :: header" ></header>
+		<main>
+			<div class="row text-center mt-5">
+				<h1>Liste des enchères</h1>
+			</div>
+			<form action="" method="get" >
+				<div class="row">
+					<div class="col-6">
+						<h4 class="mb-3">Filtres:</h4>
+						<div class="input-group flex-nowrap mb-3">
+						  <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-magnifying-glass"></i></span>
+						  <input type="search" class="form-control" name="q" placeholder="Le nom de l'article contient">
+						</div>	
+						<div class="mb-3">
+							<label class="form-label">Catégorie</label>
+							<select class="form-select" name="category" aria-label="Default select example">
+							  <option value="0" >Choisir une catégorie</option>
+							  <option th:each="categorie:${categories}" 
+							  th:value="${categorie.noCategorie}"
+							  th:text="${categorie.libelle}"
+							  ></option>
+							</select>
+						</div>
+						<!--  -->
+		  				<div class="row">
+		  					<div class="col-6">
+		  						<div class="form-check">
+								  <input class="form-check-input" checked="true" type="radio" value="achats" onchange="change(event)" name="type" id="achats">
+								  <label class="form-check-label" for="achats" >
+								    Achats
+								  </label>
+								</div>
+								<div class="container ck-achats">
+									<div class="form-check">
+									  <input class="form-check-input" type="checkbox" name="achat" value="eo" id="eo">
+									  <label class="form-check-label" for="eo">
+									    Enchères ouvertes
+									  </label>
+									</div>
+									<div class="form-check">
+									  <input class="form-check-input" type="checkbox" name="achat"  value="meec" id="meec">
+									  <label class="form-check-label" for="meec">
+									    Mes enchères en cours
+									  </label>
+									</div>
+									<div class="form-check">
+									  <input class="form-check-input" type="checkbox" name="achat"  value="mer" id="mer">
+									  <label class="form-check-label" for="mer">
+									    Mes enchères remportées
+									  </label>
+									</div>							
+								</div>						
+		  					</div>
+		  					<div class="col-6">
+		  						<div class="form-check">
+								  <input class="form-check-input" type="radio" name="type" value="mes vente" id="mes_ventes" onchange="change(event)">
+								  <label class="form-check-label" for="mes_ventes">
+								    Mes ventes
+								  </label>
+								</div> 
+								<div class="container ck-ventes">
+									<div class="form-check">
+									  <input class="form-check-input" disabled type="checkbox" name="vente" value="mvec" id="mvec">
+									  <label class="form-check-label" for="mvec">
+									    Mes vente en cours
+									  </label>
+									</div>
+									<div class="form-check">
+									  <input class="form-check-input" disabled type="checkbox" name="vente" value="vnd" id="vnd">
+									  <label class="form-check-label" for="vnd">
+									    ventes non débutées
+									  </label>
+									</div>
+									<div class="form-check">
+									  <input class="form-check-input" disabled type="checkbox" name="vente" value="vt" id="vt">
+									  <label class="form-check-label" for="vt">
+									    ventes terminées
+									  </label>
+									</div>							
+								</div>						 					
+		  					</div>
+		  				</div>
+					
+						<!--  -->					
+					</div>
+					<div class="col-6 d-flex justify-content-center align-items-center">
+						<button class="btn btn-info" type="submit" >Rechercher</button>
+					</div>
+				</div>
+			</form>
+			<div class="row mt-5">
+				<div class="col" th:each="article : ${articles}" >
+				
+					<div class="card"  >
+					  <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
+					  <div class="card-body">
+					    <h5 class="card-title" th:text="${article.nomArticle}" >Card title</h5>
+					    <p class="card-text" th:text="${article.description}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					    <a href="#" class="btn btn-primary">Détail</a>
+					  </div>
+					</div>	
+				</div>
+			</div>
+		</main>
+		<header th:replace="layouts/primary-layout :: footer" ></header>
+		<script th:src="@{js/main.js}" ></script>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
