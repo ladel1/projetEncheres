@@ -5,6 +5,8 @@ import java.util.List;
 import org.projetEncheres.bll.CategoryService;
 import org.projetEncheres.bll.EnchereService;
 import org.projetEncheres.bo.Article;
+import org.projetEncheres.bo.Utilisateur;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,20 +27,18 @@ public class HomeController {
 	public String index(Model model,
 			@RequestParam(name = "q",required = false) String query,
 			@RequestParam(name = "category",required = false) Integer category,
-			@RequestParam(name = "type",required = false) String type,
-			@RequestParam(name = "vente",required = false) List<String> ventesChecked,
-			@RequestParam(name = "achat",required = false) List<String> achatsChecked
+			@RequestParam(name = "vente",required = false) List<Integer> ventesChecked,
+			@RequestParam(name = "achat",required = false) List<Integer> achatsChecked,
+			@AuthenticationPrincipal Utilisateur utilisateur
 			) {		
-		
-		System.err.println(query);
-		System.err.println(type);
-		System.err.println(ventesChecked);
-		System.err.println(achatsChecked);
+
 		model.addAttribute("categories", categoryService.getAll());
 		List<Article> articles = enchereService.getAllArticles(); 
 		
 		if(query!=null || category!=null ) {
-			articles = enchereService.search(query, category, type);
+			Integer no = utilisateur!=null && ventesChecked!=null ? utilisateur.getNoUtilisateur():null;
+			
+			articles = enchereService.search(query, category, ventesChecked,achatsChecked,no);
 		}
 		
 		model.addAttribute("articles", articles);

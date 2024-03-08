@@ -18,8 +18,10 @@ public class EnchereService {
 	public List<Article> getAllArticles(){
 		return articleRepository.findAll();
 	}
-	public List<Article> search(String query,int category,String type){
-		return articleRepository.search(query, category, type);
+	public List<Article> search(String query,int category,List<Integer> ventesChecked,List<Integer> achatsChecked,
+			Integer user){
+		return articleRepository.search(query, category, ventesChecked,achatsChecked,
+				 user);
 	}
 	
 

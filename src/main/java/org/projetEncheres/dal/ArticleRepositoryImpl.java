@@ -1,6 +1,8 @@
 package org.projetEncheres.dal;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.projetEncheres.bo.Article;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -33,27 +35,30 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 	}
 
 	@Override
-	public List<Article> search(String query, Integer category, String type) {
+	public List<Article> search(String query, 
+			Integer category,
+			List<Integer> ventesChecked,
+			List<Integer> achatsChecked,
+			Integer user) {
 		try {
+
 			String sql = "SELECT  a.*,c.libelle "
 					+ "FROM ARTICLES a "
 					+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
-					+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie ";
-			sql +="WHERE ";
+					+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
+					+ "WHERE (:query IS NULL OR a.nom_article LIKE :query) "
+					+ "AND (:category IS NULL OR :category = 0 OR c.no_categorie = :category) "
+					+ "AND ( :user IS NULL OR a.no_utilisateur = :user) ";					
+
+			//sql = checks(ventesChecked,"ventes",sql);
+			sql = checks(achatsChecked,"achats",sql);
+			sql = checks(ventesChecked,"ventes",sql);
+			
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			boolean flag = false;
-			if(query!=null) {
-				sql +="a.nom_article LIKE :query ";
-				parameters.addValue("query", "%"+query+"%");
-				flag = true;
-			}
-			if(category>0 && flag == true) {
-				sql +="AND c.no_categorie = :category ";
-				parameters.addValue("category", category);
-			}else if(category>0) {
-				sql +="c.no_categorie = :category ";
-				parameters.addValue("category", category);
-			}
+			parameters.addValue("query", "%"+query+"%");
+			parameters.addValue("category", category);
+			parameters.addValue("user", user);
+			System.err.println(user);
 			return namedParameterJdbcTemplate.query(sql,parameters,new BeanPropertyRowMapper<Article>(Article.class));
 		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
@@ -61,4 +66,27 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 		return null;
 	}
 
+	private String checks(List<Integer> liste,String type,String sql) {
+		
+		if(liste!=null) {
+			String [] checksAchats = {
+					"AND a.date_debut_encheres <= GETDATE() AND GETDATE() < date_fin_encheres "
+			};				
+			String [] checksVentes = {
+					" ",
+					"AND a.date_debut_encheres > GETDATE() ",
+					"AND date_fin_encheres = '%s' ".formatted(LocalDate.now())
+			};				
+			for (Integer val : liste) {
+				if(type.equals("achats")) {
+					sql+=checksAchats[val];
+				}else {
+					sql+=checksVentes[val];
+				}
+			}
+		}
+		System.err.println(sql);
+		return sql;
+	}
+	
 }

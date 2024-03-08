@@ -38,19 +38,19 @@
 								</div>
 								<div class="container ck-achats">
 									<div class="form-check">
-									  <input class="form-check-input" type="checkbox" name="achat" value="eo" id="eo">
+									  <input class="form-check-input" type="checkbox" name="achat" value="0" id="eo">
 									  <label class="form-check-label" for="eo">
 									    Enchères ouvertes
 									  </label>
 									</div>
 									<div class="form-check">
-									  <input class="form-check-input" type="checkbox" name="achat"  value="meec" id="meec">
+									  <input class="form-check-input" type="checkbox" name="achat"  value="1" id="meec">
 									  <label class="form-check-label" for="meec">
 									    Mes enchères en cours
 									  </label>
 									</div>
 									<div class="form-check">
-									  <input class="form-check-input" type="checkbox" name="achat"  value="mer" id="mer">
+									  <input class="form-check-input" type="checkbox" name="achat"  value="2" id="mer">
 									  <label class="form-check-label" for="mer">
 									    Mes enchères remportées
 									  </label>
@@ -66,19 +66,19 @@
 								</div> 
 								<div class="container ck-ventes">
 									<div class="form-check">
-									  <input class="form-check-input" disabled type="checkbox" name="vente" value="mvec" id="mvec">
+									  <input class="form-check-input" disabled type="checkbox" name="vente" value="0" id="mvec">
 									  <label class="form-check-label" for="mvec">
 									    Mes vente en cours
 									  </label>
 									</div>
 									<div class="form-check">
-									  <input class="form-check-input" disabled type="checkbox" name="vente" value="vnd" id="vnd">
+									  <input class="form-check-input" disabled type="checkbox" name="vente" value="1" id="vnd">
 									  <label class="form-check-label" for="vnd">
 									    ventes non débutées
 									  </label>
 									</div>
 									<div class="form-check">
-									  <input class="form-check-input" disabled type="checkbox" name="vente" value="vt" id="vt">
+									  <input class="form-check-input" disabled type="checkbox" name="vente" value="2" id="vt">
 									  <label class="form-check-label" for="vt">
 									    ventes terminées
 									  </label>
@@ -95,7 +95,7 @@
 				</div>
 			</form>
 			<div class="row mt-5">
-				<div class="col" th:each="article : ${articles}" >
+				<div class="col-md-4" th:each="article : ${articles}" >
 				
 					<div class="card"  >
 					  <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
